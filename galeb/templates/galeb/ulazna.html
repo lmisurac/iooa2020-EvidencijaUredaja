@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block glavni_izbornik %}
+{% endblock glavni_izbornik %}
+{% block sadrzaj %}
+
+
+<h1>Administratorski galeb</h1>
+<!-- Napraviti formu za login --> 
+<img src="{% static 'galeb/slike/logo256x256.png' %}" title="Administratorski galeb"class="img-fluid" alt="Responsive image" >
+<form action="">
+  <div class="form-group">
+      <input type="text" name="userid" id="name" value="" placeholder="Korisničko ime" autofocus="" autocorrect="off" autocapitalize="off"><br/>
+      <input type="password" name="passwd" id="pass" placeholder="Lozinka" autocorrect="off" autocapitalize="off"><br/>
+      <a href="{% url 'zahtjevi' %}">
+            <button  type="button" class="btn btn-success">Prijava</button>
+      </a>
+    </div>
+</form>
+
+
+{% endblock sadrzaj%}

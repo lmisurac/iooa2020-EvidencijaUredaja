@@ -1,0 +1,239 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+from django.db import models
+
+
+class AdminOvlasti(models.Model):
+    id_uredaj = models.OneToOneField('Uredaj', models.DO_NOTHING, db_column='id_uredaj', primary_key=True)
+    lokalni_admin = models.CharField(max_length=45)
+    datum_kreiranja = models.DateField(blank=True, null=True)
+    id_zahtjev = models.ForeignKey('Zahtjev', models.DO_NOTHING, db_column='id_zahtjev', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'admin_ovlasti'
+        unique_together = (('id_uredaj', 'lokalni_admin'),)
+        verbose_name_plural = "Administratorske ovlasti"
+
+
+class AdminRadnje(models.Model):
+    id_radnje = models.AutoField(primary_key=True)
+    id_zahtjev = models.ForeignKey('Zahtjev', models.DO_NOTHING, db_column='id_zahtjev', blank=True, null=True)
+    datum = models.DateField(blank=True, null=True)
+    opis = models.CharField(max_length=500, blank=True, null=True)
+    napomena = models.CharField(max_length=500, blank=True, null=True)
+    id_uredaj = models.ForeignKey('Uredaj', models.DO_NOTHING, db_column='id_uredaj', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'admin_radnje'
+        verbose_name_plural = "Administratorske radnje"
+
+
+class Dobavljac(models.Model):
+    oznaka_dobavljaca = models.CharField(primary_key=True, max_length=15)
+    puni_naziv = models.CharField(max_length=45, blank=True, null=True)
+    adresa = models.CharField(max_length=45, blank=True, null=True)
+    kontakt = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.oznaka_dobavljaca)+" "+str(self.puni_naziv)+" "+str(self.adresa)
+
+    class Meta:
+        managed = False
+        db_table = 'dobavljac'
+        verbose_name_plural = "Dobavljači"
+
+
+class InstaliraniProgrami(models.Model):
+    id_programa = models.OneToOneField('Programi', models.DO_NOTHING, db_column='id_programa', primary_key=True)
+    id_uredaj = models.ForeignKey('Uredaj', models.DO_NOTHING, db_column='id_uredaj')
+    id_radnje = models.ForeignKey(AdminRadnje, models.DO_NOTHING, db_column='id_radnje', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'instalirani_programi'
+        unique_together = (('id_programa', 'id_uredaj'),)
+        verbose_name_plural = "Instalirani Programi"
+
+
+class Komponenete(models.Model):
+    id_komponenete = models.AutoField(primary_key=True)
+    vrsta = models.CharField(max_length=45, blank=True, null=True)
+    proizvodac = models.CharField(max_length=45, blank=True, null=True)
+    model = models.CharField(max_length=45, blank=True, null=True)
+    opis = models.CharField(max_length=250, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.vrsta)+" "+str(self.proizvodac)+" "+str(self.model)
+
+    class Meta:
+        managed = False
+        db_table = 'komponenete'
+        verbose_name_plural = "Komponenete"
+
+
+class Konfiguracija(models.Model):
+    id_konfiguracija = models.AutoField(primary_key=True)
+    id_komponente = models.ForeignKey(Komponenete, models.DO_NOTHING, db_column='id_komponente', blank=True, null=True)
+    stanje = models.CharField(max_length=31, blank=True, null=True)
+    napomena = models.CharField(max_length=500, blank=True, null=True)
+    id_uredaj = models.ForeignKey('Uredaj', models.DO_NOTHING, db_column='id_uredaj', blank=True, null=True)
+    id_radnje = models.ForeignKey(AdminRadnje, models.DO_NOTHING, db_column='id_radnje', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'konfiguracija'
+        verbose_name_plural = "Konfiguracije"
+
+
+class Korisnik(models.Model):
+    id_korisnik = models.AutoField(primary_key=True)
+    ime = models.CharField(max_length=45, blank=True, null=True)
+    prezime = models.CharField(max_length=45, blank=True, null=True)
+    email = models.CharField(max_length=45, blank=True, null=True)
+    telefon = models.CharField(max_length=45, blank=True, null=True)
+    radno_mjesto = models.CharField(max_length=45, blank=True, null=True)
+    oznaka_odjela = models.ForeignKey('Odjel', models.DO_NOTHING, db_column='oznaka_odjela', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.ime)+" "+str(self.prezime)\
+        +" ("+str(self.email)+")  - "+str(self.radno_mjesto)\
+        +" "+str(self.oznaka_odjela.naziv)\
+        +"  "+str(self.oznaka_odjela.oznaka_org_jed.naziv)+" tel:"+str(self.telefon)
+        
+
+    class Meta:
+        managed = False
+        db_table = 'korisnik'
+        verbose_name_plural = "Korisnici"
+
+
+class Nabava(models.Model):
+    id_nabave = models.AutoField(primary_key=True)
+    oznaka_org_jed = models.ForeignKey('OrganizacijskaJedinica', models.DO_NOTHING, db_column='oznaka_org_jed')
+    oznaka_dobavljaca = models.ForeignKey(Dobavljac, models.DO_NOTHING, db_column='oznaka_dobavljaca', blank=True, null=True)
+    datum = models.DateField(blank=True, null=True)
+    napomena = models.TextField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.datum)+"  "+str(self.oznaka_org_jed.naziv)\
+        +" - dobavljač: "+str(self.oznaka_dobavljaca.puni_naziv)+" "+str(self.oznaka_dobavljaca.adresa)
+
+    class Meta:
+        managed = False
+        db_table = 'nabava'
+        verbose_name_plural = "Nabave"
+
+
+class Odjel(models.Model):
+    oznaka_odjela = models.CharField(primary_key=True, max_length=15)
+    naziv = models.CharField(max_length=45)
+    oznaka_org_jed = models.ForeignKey('OrganizacijskaJedinica', models.DO_NOTHING, db_column='oznaka_org_jed')
+
+    class Meta:
+        managed = False
+        db_table = 'odjel'
+        verbose_name_plural = "Odjeli"
+    def __str__(self):
+        return str(self.oznaka_odjela)+" "+str(self.naziv) +" ("+str(self.oznaka_org_jed.naziv)+")"
+
+class OrganizacijskaJedinica(models.Model):
+    oznaka_org_jed = models.CharField(primary_key=True, max_length=10)
+    naziv = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.oznaka_org_jed)+"  "+str(self.naziv)
+
+    class Meta:
+        managed = False
+        db_table = 'organizacijska_jedinica'
+        verbose_name_plural = "Organizacijske jedinice"
+
+
+class Programi(models.Model):
+    id_programa = models.AutoField(primary_key=True)
+    naziv_programa = models.CharField(max_length=45)
+    proizvodac = models.CharField(max_length=45, blank=True, null=True)
+    licenca = models.CharField(max_length=45, blank=True, null=True)
+    napomena = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Programi'
+        verbose_name_plural = "Programi"
+
+
+class Prostorija(models.Model):
+    oznaka_prostorije = models.CharField(primary_key=True, max_length=15)
+    oznaka_zgrade = models.ForeignKey('Zgrada', models.DO_NOTHING, db_column='oznaka_zgrade')
+    kat = models.IntegerField(blank=True, null=True)
+    namjena = models.CharField(max_length=45, blank=True, null=True)
+    napomena = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.oznaka_prostorije)+"  "+str(self.namjena)+"    ("+str(self.oznaka_zgrade.naziv)+" "+str(self.kat)+".kat)"
+
+    class Meta:
+        managed = False
+        db_table = 'prostorija'
+        verbose_name_plural = "Prostorije"
+
+
+class Uredaj(models.Model):
+    id_uredaj = models.AutoField(primary_key=True)
+    vrsta = models.CharField(max_length=47, blank=True, null=True)
+    hostname_ip = models.CharField(db_column='hostname_IP', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    oznaka_prostorije = models.ForeignKey(Prostorija, models.DO_NOTHING, db_column='oznaka_prostorije', blank=True, null=True)
+    id_korisnik = models.ForeignKey(Korisnik, models.DO_NOTHING, db_column='id_korisnik', blank=True, null=True)
+    napomena = models.CharField(max_length=500, blank=True, null=True)
+    id_nabave = models.ForeignKey(Nabava, models.DO_NOTHING, db_column='id_nabave', blank=True, null=True)
+    istek_garancije = models.DateField(blank=True, null=True)
+    proizvodac = models.CharField(max_length=45, blank=True, null=True)
+    model = models.CharField(max_length=45, blank=True, null=True)
+    def __str__(self):
+        return str(self.vrsta)+": "+str(self.hostname_ip)+"  "+str(self.proizvodac)+"("+str(self.model)\
+        +") "+str(self.id_korisnik.ime)+" "+str(self.id_korisnik.prezime)\
+        +" ("+str(self.id_korisnik.email)+")"+" "+str(self.id_korisnik.radno_mjesto)
+    class Meta:
+        managed = False
+        db_table = 'uredaj'
+        verbose_name_plural = "Uređaji"
+
+
+class Zahtjev(models.Model):
+    id_zahtjev = models.AutoField(primary_key=True)
+    id_korisnik = models.ForeignKey(Korisnik, models.DO_NOTHING, db_column='id_korisnik', blank=True, null=True)
+    datum = models.DateField(blank=True, null=True)
+    nacin_podnosenja = models.CharField(max_length=40)
+    opis = models.CharField(max_length=500)
+    status = models.CharField(max_length=29)
+    napomena = models.CharField(max_length=500, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.status)+":  "+str(self.datum)+"  "+str(self.id_korisnik.ime)+" "+str(self.id_korisnik.prezime)\
+        +" ("+str(self.id_korisnik.email)+") - "+str(self.opis)
+
+    class Meta:
+        managed = False
+        db_table = 'zahtjev'
+        verbose_name_plural = "Zathjevi"
+
+
+class Zgrada(models.Model):
+    oznaka_zgrade = models.CharField(primary_key=True, max_length=15)
+    naziv = models.CharField(max_length=45)
+    adresa = models.CharField(max_length=45, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.oznaka_zgrade)+" "+str(self.naziv)+" ("+str(self.adresa)+")"
+
+    class Meta:
+        managed = False
+        db_table = 'zgrada'
+        verbose_name_plural = "Zgrade"

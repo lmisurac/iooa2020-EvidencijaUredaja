@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h1>Organizacijska struktura</h1>
+<h3>Korisnik: {{request.user}}</h3>
+<div class="table-responsive">
+    <table class="table  table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Oznaka org.jed.</th>
+              <th>Naziv</th>
+              <th>Akcije</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for oj in org_jedinice %}
+            <tr data-toggle="collapse" href="#odjeli{{oj.oznaka_org_jed}}" role="button">
+              <td>{{oj.oznaka_org_jed}}</td>
+              <td>{{oj.naziv}}</td>
+              <td>Akcije</td>
+            </tr> 
+            <tr class="collapse" id="odjeli{{oj.oznaka_org_jed}}">
+                <td></td>
+                <td>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                          <th>Odjeli</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-left">
+                   {% for od in odjeli %} 
+                    {% if  oj.oznaka_org_jed ==  od.oznaka_org_jed.oznaka_org_jed %}
+                    <tr data-toggle="collapse" href="#korisnici{{od.oznaka_odjela}}" role="button">
+                        <td>{{ od }}</td>
+                    </tr>
+                    <tr class="collapse" id="korisnici{{od.oznaka_odjela}}">
+                        <td>
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                      <th>Korisnici</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for k in korisnici %} 
+                                {% if  od.oznaka_odjela ==  k.oznaka_odjela.oznaka_odjela %}
+                                 <tr>
+                                    <td>{{ k }}</td>
+                                 </tr>
+                                
+                                {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                          
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}    
+                    </tbody>
+                </table>
+                </td>
+           </tr> 
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<ul class="text-left">
+
+    
+
+</ul>
+{% endblock sadrzaj%}

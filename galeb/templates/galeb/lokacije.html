@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h1>Zgrade i prostorije</h1>
+<h3>Korisnik: {{request.user}}</h3>
+
+<div class="table-responsive">
+    <table class="table  table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Oznaka</th>
+              <th>Naziv</th>
+              <th>Adresa</th>
+              <th>Akcija</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for z in zgrade %}
+            <tr data-toggle="collapse" href="#prostorije{{z.oznaka_zgrade}}" role="button">
+              <td>{{z.oznaka_zgrade}}</td>
+              <td>{{z.naziv}}</td>
+              <td>{{z.adresa}}</td>
+              <td>Akcije</td>
+            </tr> 
+            <tr class="collapse" id="prostorije{{z.oznaka_zgrade}}">
+                <td></td>
+                <td colspan="3">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                          <th>Prostorije</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-left">
+                   {% for p in prostorije %} 
+                   {% if  p.oznaka_zgrade.oznaka_zgrade ==  z.oznaka_zgrade %}
+                    <tr data-toggle="collapse" href="#uredaji{{p.oznaka_prostorije}}" role="button">
+                        <td>{{p.oznaka_prostorije}} - {{p.namjena}}</td>
+                    </tr>
+                    <tr class="collapse" id="uredaji{{p.oznaka_prostorije}}">
+                        <td>
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                      <th>Uredaji</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for u in uredaji %} 
+                                {% if  u.oznaka_prostorije.oznaka_prostorije ==  p.oznaka_prostorije %}
+                                 <tr>
+                                    <td>{{ u }}</td>
+                                 </tr>
+                                
+                                {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}    
+                    </tbody>
+                </table>
+                </td>
+           </tr> 
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<ul class="text-left">
+
+    
+
+</ul>
+{% endblock sadrzaj%}
