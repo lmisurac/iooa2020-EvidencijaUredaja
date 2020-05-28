@@ -219,10 +219,14 @@ class Zahtjev(models.Model):
         return str(self.status)+":  "+str(self.datum)+"  "+str(self.id_korisnik.ime)+" "+str(self.id_korisnik.prezime)\
         +" ("+str(self.id_korisnik.email)+") - "+str(self.opis)
 
+    def get_absolute_url(self):
+        return reverse('ZahtjevDetailView', kwargs={'pk': self.pk})
+
     class Meta:
         managed = False
         db_table = 'zahtjev'
         verbose_name_plural = "Zathjevi"
+        ordering = ["-datum"]
 
 
 class Zgrada(models.Model):

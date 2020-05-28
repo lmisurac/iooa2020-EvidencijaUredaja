@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h1>Detalji zahtjeva</h1>
+<h3>Korisnik: {{request.user}}</h3>
+{{request.user}}<br/>
+<a href="{% url 'ZahtjevListView' %}">&lt;Natrag</a>
+<br/>
+{{ form }}
+
+
+{% endblock sadrzaj%}

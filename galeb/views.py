@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import AdminOvlasti,AdminRadnje,Dobavljac,InstaliraniProgrami,Komponenete,Konfiguracija,Korisnik,\
-                     Nabava,Odjel,OrganizacijskaJedinica,Programi,Prostorija,Uredaj,Zahtjev,Zgrada
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
+
+from . models import (AdminOvlasti,AdminRadnje,Dobavljac,
+InstaliraniProgrami,Komponenete,Konfiguracija,Korisnik,
+Nabava,Odjel,OrganizacijskaJedinica,Programi,Prostorija,Uredaj,Zahtjev,Zgrada)
+
+
 
 # Create your views here.
 def ulazna(request):
@@ -9,6 +16,24 @@ def ulazna(request):
     print (str(request))
     return render(request,"galeb/ulazna.html",{})
 
+class ZahtjevListView(ListView):
+    model = Zahtjev
+    context_object_name = 'zahtjevi'
+    paginate_by = 5
+
+class ZahtjevDetailView(DetailView):
+    model = Zahtjev
+    context_object_name = 'zahtjev'
+
+class ZahtjevCreateView(CreateView):
+    model = Zahtjev
+    fields = ['id_korisnik','datum','nacin_podnosenja','opis','status','napomena']
+    # datum = models.DateField(blank=True, null=True)
+    # nacin_podnosenja = models.CharField(max_length=40)
+    # opis = models.CharField(max_length=500)
+    # status = models.CharField(max_length=29)
+    # napomena = models.CharField(max_length=500, blank=True, null=True)
+'''
 def zahtjevi(request):
     zahtjevi = Zahtjev.objects.all()
     print("Zahtjevi")
@@ -17,7 +42,7 @@ def zahtjevi(request):
         print(z)
     kontekst = {"zahtjevi":zahtjevi}
     return render(request,"galeb/zahtjevi.html",kontekst)
-
+'''
 #zgrade prostorije uredaji
 def lokacije(request):
     zgrade = Zgrada.objects.all()
