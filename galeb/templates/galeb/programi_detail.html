@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Program {{ program.naziv_programa }}</h2>
+
+<ul class="nav">
+  <li class="nav-item">
+    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ProgramiListView' %}" >
+    &lt;Programi
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'ProgramiUpdateView' program.id_programa %}">Uredi program</a>
+  </li>
+  {% if not program.instaliraniprogrami_set.get_queryset %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'ProgramiDeleteView' program.id_programa %}">Obriši program</a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="" title="Program se ne može izbrisati sve dok je instaliran na najmanje 1 uređaj">Obriši program</a>
+  </li>
+  {% endif %}
+</ul>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Naziv programa</th>
+              <th>Proizvođač</th>
+              <th>Licenca</th>
+              <th>Napomena</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ program.naziv_programa }}</td>
+                <td>{{ program.proizvodac|default:'-'}}</td>
+                <td>{{ program.licenca|default:'-'}}</td>
+                <td>{{ program.napomena|default:'-'}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h5>Instaliran na uredaje</h5>
+    {% if instalirani_programi %}
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcija</th>
+              <th>Lokacija</th>
+              <th>Vrsta uređaja</th>
+              <th>Hostname ili IP</th>
+              <th>Proizvođač</th>
+              <th>Model</th>
+              <th>Napomena</th>
+              <th>Korisnik</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        {% for ip in instalirani_programi %}
+            <tr>
+                <td>
+                <a href="{% url 'UredajDetailView' ip.id_uredaj.id_uredaj %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji uređaja</a>
+               </td>
+                <td>{{ ip.id_uredaj.oznaka_prostorije|default:"Neraspoređen" }}</td>
+                <td>{{ ip.id_uredaj.vrsta }}</td>
+                <td>{{ ip.id_uredaj.hostname_ip|default_if_none:"Nepreimenovan" }}</td>
+                <td>{{ ip.id_uredaj.proizvodac|default_if_none:"-" }}</td>
+                <td>{{ ip.id_uredaj.model|default_if_none:"-" }}</td>
+                <td>{{ ip.id_uredaj.napomena|default_if_none:"-" }}</td>
+                <td>{{ ip.id_uredaj.id_korisnik.ime|default:"N" }}
+                    {{ ip.id_uredaj.id_korisnik.prezime|default:"N" }}
+                    ({{ ip.id_uredaj.id_korisnik.email|default:"-"}})
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">Ovaj program nije za sada instaliran na nijedan uređaj</div>
+    {% endif%}
+</div>
+{% endblock sadrzaj%}

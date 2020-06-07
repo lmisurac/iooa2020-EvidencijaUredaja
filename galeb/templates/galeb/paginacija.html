@@ -1,0 +1,17 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-primary btn-sm" href="?page=1">&laquo; Početna</a>
+            <a class="btn btn-outline-primary btn-sm" href="?page={{ page_obj.previous_page_number }}">&lt; Prethodna</a>
+        {% endif %}
+
+        <span class="current">
+            Stranica {{ page_obj.number }} od {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-primary btn-sm"href="?page={{ page_obj.next_page_number }}">Sljedeća&gt;</a>
+            <a class="btn btn-outline-primary btn-sm"href="?page={{ page_obj.paginator.num_pages }}">Posljednja &raquo;</a>
+        {% endif %}
+    </span>
+</div>

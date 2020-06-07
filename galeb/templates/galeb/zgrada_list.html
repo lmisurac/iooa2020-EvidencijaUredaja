@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Zgrade</h2>
+<a href="{% url 'ZgradaCreateView' %}" class="btn btn-outline-success btn-sm" role="button" aria-pressed="true">Nova zgrada</a>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcija</th>
+              <th>Oznaka</th>
+              <th>Naziv</th>
+              <th>Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for z in zgrade %}
+            <tr>
+                <td>
+                <a href="{% url 'ZgradaDetailView' z.oznaka_zgrade %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji zgrade</a>
+               </td>
+              <td>{{z.oznaka_zgrade}}</td>
+              <td>{{z.naziv}}</td>
+              <td>{{z.adresa}}</td>
+              
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock sadrzaj%}

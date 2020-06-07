@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Brisanje organizacijske jedinice {{ org_jedinica.oznaka_org_jed }}?</h2>
+
+<form action='' method="post" >{% csrf_token %}
+    <div class="alert alert-warning" role="alert">
+      <p>{{ org_jedinica }}</p>
+     <a href="{% url 'OrganizacijskaJedinicaDetailView' org_jedinica.oznaka_org_jed %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">&lt;Natrag</a>
+     <button type="submit" class="btn btn-danger btn-sm">Briši</button>
+     
+    </div>
+  
+</form>
+
+{% endblock sadrzaj %}

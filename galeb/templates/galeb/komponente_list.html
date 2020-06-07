@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Hardeverske komponente</h2>
+<a  class="btn btn-outline-success btn-sm" role="button" aria-pressed="true"href="{% url 'KomponenteCreateView' %}">Nova komponenta</a>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcija</th>
+              <th>Vrsta</th>
+              <th>Proizvođač</th>
+              <th>Model</th>
+              <th>opis</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for k in komponente %}
+            <tr>
+                <td>
+                <a href="{% url 'KomponenteDetailView' k.id_komponente %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji</a>
+               </td>
+                <td>{{ k.vrsta }}</td>
+                <td>{{ k.proizvodac }}</td>
+                <td>{{ k.model }}</td>
+                <td>{{ k.opis }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% include 'galeb/paginacija.html' %}
+</div>
+{% endblock sadrzaj%}

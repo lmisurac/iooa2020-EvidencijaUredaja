@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Dobavljač {{ dobavljac.puni_naziv}}</h2>
+<ul class="nav">
+  <li class="nav-item">
+    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'DobavljacListView' %}" >
+    &lt;Dobavljači
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'DobavljacUpdateView' dobavljac.oznaka_dobavljaca %}">Uredi dobavljača</a>
+  </li>
+  {% if not dobavljac.nabava_set.get_queryset %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'DobavljacDeleteView' dobavljac.oznaka_dobavljaca %}">Obriši dobavljača</a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="" title="Dobavljač se ne može obrisati, jer postoji najmanje 1 nabava u kojoj sudijeluje">Obriši dobavljača</a>
+  </li>
+  {% endif %}
+</ul>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Oznaka dobavljača</th>
+              <th>Puni naziv</th>
+              <th>Adresa</th>
+              <th>Kontakt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ dobavljac.oznaka_dobavljaca }}</td>
+                <td>{{ dobavljac.puni_naziv }}</td>
+                <td>{{ dobavljac.adresa}}</td>
+                <td>{{ dobavljac.kontakt }}</td>
+            </tr>
+        </tbody>
+    </table>
+<h5>Nabave u kojima sudjeluje</h5>
+{% if dobavljac.nabava_set.get_queryset %}
+<table class="table table-striped table-sm">
+    <thead class="thead-dark">
+        <tr>
+          <th>Akcija</th>
+          <th>Datum</th>
+          <th>Organizacijska jedinica</th>
+          <th>Napomena</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for n in dobavljac.nabava_set.get_queryset %}
+        <tr>
+            <td>
+            <a href="{% url 'NabavaDetailView' n.id_nabave %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji</a>
+           </td>
+            <td>{{ n.datum }}</td>
+            <td>{{ n.oznaka_org_jed.naziv }}</td>
+            <td>{{ n.napomena }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-warning" role="alert">Ovaj dobavljač do sada nije sudjelovao u nabavi</div>
+{% endif%}
+</div>
+{% endblock sadrzaj%}

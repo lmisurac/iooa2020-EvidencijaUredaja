@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Odjel {{ odjel.oznaka_odjela }}</h2>
+<ul class="nav">
+  <li class="nav-item">
+    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'OrganizacijskaJedinicaDetailView' odjel.oznaka_org_jed.oznaka_org_jed %}" >
+    &lt;Organizacijska jedinica {{odjel.oznaka_org_jed.oznaka_org_jed}}
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'OdjelUpdateView' odjel.oznaka_org_jed.oznaka_org_jed odjel.oznaka_odjela %}" >Uredi odjel</a>
+  </li>
+  {% if not odjel.korisnik_set.get_queryset %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'OdjelDeleteView' odjel.oznaka_org_jed.oznaka_org_jed odjel.oznaka_odjela  %}">Obriši odjel</a>
+  </li>
+  {% else %}
+    <li class="nav-item"title="Odjel se ne može pobrisati dok sadrži korisnike ">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="#" >Obriši odjel</a>
+  </li>
+  {% endif %}
+</ul>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Oznaka odjela</th>
+              <th>Naziv odjela</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+               <td> {{ odjel.oznaka_odjela }}</td>
+               <td> {{ odjel.naziv }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% if odjel.korisnik_set.get_queryset %}
+    <h5> {{ odjel.naziv }} - djelatnici</h5>
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcije</th>
+              <th>Ime</th>
+              <th>Prezime</th>
+              <th>Email</th>
+              <th>Telefon</th>
+              <th>Radno mjesto</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for k in odjel.korisnik_set.get_queryset %}
+            <tr>
+               <td>
+                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'KorisnikDetailView' k.id_korisnik %}" >Detalji</a>
+               </td>
+               <td> {{ k.ime }}</td>
+               <td> {{ k.prezime }}</td>
+               <td> {{ k.email }}</td>
+               <td> {{ k.telefon }}</td>
+               <td> {{ k.radno_mjesto }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-warning" role="alert">{{odjel.naziv}} za sada nema upisanih korisnika</div>
+{% endif%}
+
+</div>
+{% endblock sadrzaj%}

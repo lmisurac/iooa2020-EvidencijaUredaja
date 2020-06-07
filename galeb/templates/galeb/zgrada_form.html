@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block sadrzaj %}
-<h2>Zahtjev</h2>
-
-<a href="{% url 'ZahtjevListView' %}" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">&lt;Natrag</a>
+<h2>Zgrada </h2>
+<a href="{% url 'ZgradaListView' %}" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">&lt;Zgrade</a>
 
 <form action="" method="post">
 {% csrf_token %}

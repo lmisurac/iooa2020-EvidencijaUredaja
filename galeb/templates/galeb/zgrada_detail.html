@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>{{zgrada.naziv}}</h2>
+
+<ul class="nav">
+  <li class="nav-item">
+    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ZgradaListView' %}" >
+    &lt;Zgrade
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'ZgradaUpdateView' zgrada.oznaka_zgrade %}">Uredi zgradu</a>
+  </li>
+  {% if not zgrada.prostorija_set.get_queryset %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'ZgradaDeleteView' zgrada.oznaka_zgrade %}">Obriši zgradu</a>
+  </li>
+  {% else %}
+    <li class="nav-item"title="Zgrada se ne može obrisati dok postoje prostorije u zgradi">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="#" >Obriši zgradu</a>
+  </li>
+  {% endif %}
+</ul>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Oznaka</th>
+              <th>Naziv</th>
+              <th>Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>{{zgrada.oznaka_zgrade}}</td>
+              <td>{{zgrada.naziv}}</td>
+              <td>{{zgrada.adresa}}</td>
+            </tr>
+        </tbody> 
+    </table>
+
+    {% if zgrada.prostorija_set.get_queryset %}
+    <h5>Popis prostorija u zgradi</h5>
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr> 
+                <th>Akcija</th>
+                <th>Oznaka prostorije</th> 
+                <th>Kat</th>
+                <th>Namjena</th>
+                <th>Napomena</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in zgrada.prostorija_set.get_queryset %}
+            <tr>
+                <td>
+                    <a  class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ProstorijaDetailView' zgrada.oznaka_zgrade p.oznaka_prostorije %}">Detalji prostorije</a></td>
+                <td>{{ p.oznaka_prostorije }}</td>
+                <td>{{ p.kat|default_if_none:"-"  }}</td>
+                <td>{{ p.namjena|default_if_none:"-"  }}</td>
+                <td>{{ p.napomena|default_if_none:"-"  }}</td>
+             </tr>    
+             {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert">U zgradi za sada, nije upisana niti jedna prostorija. Može se pobrisati </div>
+    {% endif %}
+    <ul class="nav">
+        <li class="nav-item">
+        <a class="btn btn-outline-success btn-sm" role="button" aria-pressed="true" href="{% url 'ProstorijaCreateView' zgrada.oznaka_zgrade %}" >
+            Nova prostorija
+        </a>
+  </li>
+  </ul>
+  
+</div>
+
+{% endblock sadrzaj%}

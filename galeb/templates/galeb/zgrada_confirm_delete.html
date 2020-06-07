@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Brisanje zgrade {{ zgrada.oznaka_zgrade }}?</h2>
+
+<form action='' method="post" >{% csrf_token %}
+    <div class="alert alert-warning" role="alert">
+      <p>{{ zgrada }}</p>
+     <a href="{% url 'ZgradaDetailView' zgrada.oznaka_zgrade %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">&lt;Natrag</a>
+     <button type="submit" class="btn btn-danger btn-sm">Briši</button>
+    </div>
+  
+</form>
+
+{% endblock sadrzaj %}

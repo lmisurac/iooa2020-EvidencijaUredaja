@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Brisanje odjela {{odjel.oznaka_odjela}} ?</h2>
+
+<form action='' method="post" >{% csrf_token %}
+    <div class="alert alert-warning" role="alert">
+      <p>{{ odjel }}</p>
+     <a href="{% url 'OdjelDetailView' odjel.oznaka_org_jed.oznaka_org_jed odjel.oznaka_odjela %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">&lt;Natrag</a>
+     <button type="submit" class="btn btn-danger btn-sm">Briši</button>
+    </div>
+  
+</form>
+
+{% endblock sadrzaj %}

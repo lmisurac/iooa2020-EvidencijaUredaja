@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import AdminOvlasti,AdminRadnje,Dobavljac,InstaliraniProgrami,Komponenete,Konfiguracija,Korisnik,\
+from . models import AdminOvlasti,AdminRadnje,Dobavljac,InstaliraniProgrami,Komponente,Konfiguracija,Korisnik,\
                      Nabava,Odjel,OrganizacijskaJedinica,Programi,Prostorija,Uredaj,Zahtjev,Zgrada
 
 # Register your models here.
@@ -7,7 +7,7 @@ from . models import AdminOvlasti,AdminRadnje,Dobavljac,InstaliraniProgrami,Komp
 admin.site.register(AdminOvlasti)
 admin.site.register(AdminRadnje)
 admin.site.register(Dobavljac)
-admin.site.register(Komponenete)
+admin.site.register(Komponente)
 admin.site.register(Konfiguracija)
 admin.site.register(Korisnik)
 admin.site.register(Nabava)

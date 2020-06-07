@@ -2,9 +2,8 @@
 {% load static %}
 
 {% block sadrzaj %}
-<h2>Zahtjev</h2>
-
-<a href="{% url 'ZahtjevListView' %}" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">&lt;Natrag</a>
+<h2>Administratorska radnja</h2>
+<a href="{% url 'ZahtjevDetailView' id_zahtjev %}" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">&lt; Natrag zahtjev {{id_zahtjev}}</a>
 
 <form action="" method="post">
 {% csrf_token %}

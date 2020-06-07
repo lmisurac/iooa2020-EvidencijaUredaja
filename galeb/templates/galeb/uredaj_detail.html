@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Detalji uređaja {{uredaj.hostname_ip|default:uredaj.id_uredaj }}</h2>
+
+<ul class="nav">
+  <li class="nav-item">
+    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'UredajListView' %}" >
+    &lt;Uređaji
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'UredajUpdateView' uredaj.id_uredaj %}">Uredi uredaj</a>
+  </li>
+  {% if not uredaj.adminradnje_set.get_queryset %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'UredajDeleteView' uredaj.id_uredaj %}">Obriši uređaj</a>
+  </li>
+   {% else %}
+    <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="" title="Uređaj se ne može pobrisati dok sadrži admin radnje" >Obriši uređaj</a>
+  </li>
+   {% endif %}
+</ul>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Vrsta</th>
+              <th>Hostname ili IP</th>
+              <th>Proizvođač</th>
+              <th>Model</th>
+              <th>Napomena</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>{{uredaj.vrsta }}</td>
+              <td>{{uredaj.hostname_ip|default_if_none:"Nije preimenovan" }}</td>
+              <td>{{uredaj.proizvodac|default_if_none:"-" }}</td>
+              <td>{{uredaj.model|default_if_none:"-" }}</td>
+              <td>{{uredaj.napomena|default_if_none:"-" }}</td>
+            </tr>
+        </tbody> 
+    </table>
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nabava</th>
+                <th>Istek grancije</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{uredaj.id_nabave|default_if_none:"Nepoznata"}}</td>
+                <td>{{uredaj.istek_garancije|default_if_none:"-"}}</td>
+            </tr>
+        </tbody> 
+    </table>
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th>Akcija</th>
+                <th>Smještaj</th>
+                {% if uredaj.id_korisnik  %}
+                <th>Akcija</th>
+                {% endif %}
+                <th>Korisnik</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {% if uredaj.oznaka_prostorije is not none %}
+                     <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ProstorijaDetailView' uredaj.oznaka_prostorije.oznaka_zgrade.oznaka_zgrade uredaj.oznaka_prostorije.oznaka_prostorije %}" >
+                        Detalji prostorije
+                    </a>
+                    {% else %}
+                    <a class="btn btn-outline-primary btn-sm disabled" role="button" aria-pressed="true" href="" title="Uređaj je za sada neraspoređen">
+                        Detalji prostorije
+                    </a>
+                    {% endif %}
+                </td>
+                <td>{{uredaj.oznaka_prostorije|default_if_none:"Neraspoređen"}}</td>
+                <td>
+                {% if uredaj.id_korisnik  %}
+                     <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'KorisnikDetailView' uredaj.id_korisnik.id_korisnik %}">
+                        Detalji korisnika
+                     </a>
+                </td>
+                <td>
+                    {{uredaj.id_korisnik.ime}}
+                    {{uredaj.id_korisnik.prezime}}
+                    ({{uredaj.id_korisnik.email}})
+                {% else %}
+                    Uređaj je nezadužen
+                {% endif %}
+                </td>
+            </tr>
+        </tbody> 
+    </table>
+    <h5>Administratorske radnje</h5>
+    {% if uredaj.adminradnje_set.get_queryset %}
+     <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcije</th>
+              <th>Datum</th>
+              <th>Opis</th>
+              <th>Napomena</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ar in uredaj.adminradnje_set.get_queryset%}
+            <tr>
+              <td> 
+                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'AdminRadnjeDetailView' ar.id_zahtjev.id_zahtjev ar.id_radnje %}" >
+                        Detalji administratorske radnje
+                    </a> 
+              </td>
+              <td>{{ar.datum}}</td>
+              <td>{{ar.opis}}</td>
+              <td>{{ar.napomena}}</td>
+            </tr>
+        {% endfor %}
+        </tbody> 
+    </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert">Na ovom uređaju za sada nema evidentiranih administratorskih radnji</div>
+    {% endif %}
+    <h5>Instalirani programi</h5>  
+    <a  class="btn btn-outline-success btn-sm" role="button" aria-pressed="true"href="{% url 'InstaliraniProgramiCreateView' uredaj.id_uredaj %}">Dodaj instalirani program</a>
+    {% if uredaj.instaliraniprogrami_set.get_queryset %}
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcija</th>
+              <th></th>
+              <th></th>
+              <th>Naziv programa</th>
+              <th>Proizvođač</th>
+              <th>Licenca</th>
+              <th>Napomena</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in uredaj.instaliraniprogrami_set.get_queryset %}
+            <tr>
+                <td><a href="{% url 'ProgramiDetailView' p.id_programa.id_programa %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji programa</a></td>
+
+               <td><a href="{% url 'InstaliraniProgramiUpdateView' uredaj.id_uredaj p.id_instalacije %}" class="btn btn-outline-warning btn-sm " role="button" aria-pressed="true">Uređivanje instalacije</a></td>
+
+               <td> <a href="{% url 'InstaliraniProgramiDeleteView' uredaj.id_uredaj p.id_instalacije %}" class="btn btn-outline-danger btn-sm " role="button" aria-pressed="true">Brisanje instalacije</a></td>
+                
+                <td>{{ p.id_programa.naziv_programa }}</td>
+                <td>{{ p.id_programa.proizvodac}}</td>
+                <td>{{ p.id_programa.licenca}}</td>
+                <td>{{ p.id_programa.napomena}}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert">Na ovom uređaju za sada nema evidentiranih instaliranih programa</div>
+    {% endif %}
+ 
+    <h5>Ugrađene komponente (konfiguracija)</h5>
+    <a  class="btn btn-outline-success btn-sm" role="button" aria-pressed="true"href="{% url 'KonfiguracijaCreateView' uredaj.id_uredaj %}">Dodaj komponentu</a>
+    {% if uredaj.konfiguracija_set.get_queryset %}
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcije</th>
+              <th></th>
+              <th></th>
+              <th>Vrsta</th>
+              <th>Proizvođač</th>
+              <th>Model</th>
+              <th>opis</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for k in uredaj.konfiguracija_set.get_queryset %}
+            <tr>
+                <td><a href="{% url 'KomponenteDetailView' k.id_komponente.id_komponente %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji komponente</a> </td>
+               <td><a href="{% url 'KonfiguracijaUpdateView' uredaj.id_uredaj k.id_konfiguracija %}" class="btn btn-outline-warning btn-sm " role="button" aria-pressed="true">Uređivanje konfiguracije</a></td>
+               <td><a href="{% url 'KonfiguracijaDeleteView' uredaj.id_uredaj k.id_konfiguracija %}" class="btn btn-outline-danger btn-sm " role="button" aria-pressed="true">Brisanje konfiguracije</a></td>
+                <td>{{ k.id_komponente.vrsta }}</td>
+                <td>{{ k.id_komponente.proizvodac }}</td>
+                <td>{{ k.id_komponente.model }}</td>
+                <td>{{ k.id_komponente.opis }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert">Na ovom uređaju za sada nema evidentiranih komponenti</div>
+    {% endif %}
+    
+</div>
+
+{% endblock sadrzaj%}
