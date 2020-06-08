@@ -13,9 +13,15 @@
   <li class="nav-item">
     <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'ZahtjevUpdateView' zahtjev.id_zahtjev %}">Uredi zahtjev</a>
   </li>
+ {% if not zahtjev.adminradnje_set.get_queryset %} 
   <li class="nav-item">
     <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'ZahtjevDeleteView' zahtjev.id_zahtjev %}">Obriši zahtjev</a>
   </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="" title="Zahtjev se ne može obrisati dok sadrži administratorske radnje">Obriši zahtjev</a>
+  </li>
+  {% endif %}
 </ul>
 <div class="table-responsive">
     <table class="table table-striped table-sm">

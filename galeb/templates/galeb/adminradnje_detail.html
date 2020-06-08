@@ -13,9 +13,15 @@
   <li class="nav-item">
     <a class="btn btn-outline-warning btn-sm" role="button" aria-pressed="true" href="{% url 'AdminRadnjeUpdateView' adminradnja.id_zahtjev.id_zahtjev adminradnja.id_radnje %}">Uredi radnju</a>
   </li>
+  {% if not adminradnja.id_uredaj and not adminradnja.instaliraniprogrami_set.get_queryset and not adminradnja.konfiguracija_set.get_queryset %}
   <li class="nav-item">
     <a class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" href="{% url 'AdminRadnjeDeleteView' adminradnja.id_zahtjev.id_zahtjev adminradnja.id_radnje %}">Obriši radnju</a>
   </li>
+  {% else %}
+    <li class="nav-item">
+        <a class="btn btn-outline-danger btn-sm disabled" role="button" aria-pressed="true" href="" title="Radnja sadrži povezane uređaje, konfiguracije ili instalirane programe">Obriši radnju</a>
+    </li>
+  {% endif %}
 </ul>
 <div class="table-responsive">
     <table class="table table-striped table-sm">
