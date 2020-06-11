@@ -16,6 +16,7 @@ KomponenteListView,KomponenteDetailView,KomponenteCreateView,KomponenteUpdateVie
 KonfiguracijaCreateView,KonfiguracijaUpdateView,KonfiguracijaDeleteView,
 NabavaListView,NabavaCreateView,NabavaDetailView,NabavaUpdateView,NabavaDeleteView,
 DobavljacListView,DobavljacDetailView,DobavljacCreateView,DobavljacUpdateView,DobavljacDeleteView,
+AdminOvlastiCreateView,AdminOvlastiUpdateView,AdminOvlastiDeleteView,AdminOvlastiListView,
 )
 
 urlpatterns = [
@@ -47,12 +48,17 @@ urlpatterns = [
     path('uredaji/<int:pk>/instaliraniprogrami/novi/',InstaliraniProgramiCreateView.as_view(),name='InstaliraniProgramiCreateView'),
     path('uredaji/<int:fk>/instaliraniprogrami/uredivanje/<int:pk>/',InstaliraniProgramiUpdateView.as_view(),name='InstaliraniProgramiUpdateView'),
     path('uredaji/<int:fk>/instaliraniprogrami/brisanje/<int:pk>/',InstaliraniProgramiDeleteView.as_view(),name='InstaliraniProgramiDeleteView'),
-    
+    path('uredaji/<int:pk>/instaliraniprogrami/novi/',InstaliraniProgramiCreateView.as_view(),name='InstaliraniProgramiCreateView'),
     
     path('uredaji/<int:pk>/konfiguracija/nova/',KonfiguracijaCreateView.as_view(),name='KonfiguracijaCreateView'),
     path('uredaji/<int:fk>/konfiguracija/uredivanje/<int:pk>/',KonfiguracijaUpdateView.as_view(),name='KonfiguracijaUpdateView'),
-    path('uredaji/<int:fk>/konfiguracija/brisanje/<int:pk>/',KonfiguracijaDeleteView.as_view(),name='KonfiguracijaDeleteView'),
-
+    path('uredaji/<int:fk>/konfiguracija/brisanje/<int:pk>/',KonfiguracijaDeleteView.as_view(),name='KonfiguracijaDeleteView'), 
+    
+    path('uredaji/<int:pk>/adminovlasti/nova/',AdminOvlastiCreateView.as_view(),name='AdminOvlastiCreateView'),
+    path('uredaji/<int:fk>/adminovlasti/uredivanje/<int:pk>/',AdminOvlastiUpdateView.as_view(),name='AdminOvlastiUpdateView'),
+    path('uredaji/<int:fk>/admiovlasti/brisanje/<int:pk>/',AdminOvlastiDeleteView.as_view(),name='AdminOvlastiDeleteView'),
+    path('admiovlasti/',AdminOvlastiListView.as_view(),name='AdminOvlastiListView'),
+    
     path('organizacijskejedinice/',OrganizacijskaJedinicaListView.as_view(),name="OrganizacijskaJedinicaListView"),
     path('organizacijskejedinice/<str:pk>/',OrganizacijskaJedinicaDetailView.as_view(),name="OrganizacijskaJedinicaDetailView"),
     path('organizacijskajedinica/nova/',OrganizacijskaJedinicaCreateView.as_view(),name="OrganizacijskaJedinicaCreateView"),

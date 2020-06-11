@@ -18,7 +18,7 @@
         {% for z in zgrade %}
             <tr>
                 <td>
-                <a href="{% url 'ZgradaDetailView' z.oznaka_zgrade %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji zgrade</a>
+                <a href="{% url 'ZgradaDetailView' z.oznaka_zgrade %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji zgrade {{z.oznaka_zgrade}}</a>
                </td>
               <td>{{z.oznaka_zgrade}}</td>
               <td>{{z.naziv}}</td>

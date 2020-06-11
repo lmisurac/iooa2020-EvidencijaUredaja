@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sadrzaj %}
+<h2>Uređaji sa administratorskim ovlastima</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+            <tr>
+              <th>Akcija</th>
+              <th>Vrsta</th>
+              <th>Hostname ili IP</th>
+              <th>Lokalni administratorski račun</th>
+              <th></th>
+              <th>Korisnik</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ao in adminovlasti %}
+            <tr>
+                <td>
+                <a href="{% url 'UredajDetailView' ao.id_uredaj.id_uredaj %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji uređaja br.{{ao.id_uredaj.id_uredaj}}</a>
+               </td>
+              <td>{{ao.id_uredaj.vrsta}}</td>
+              <td>{{ao.id_uredaj.hostname_ip}}</td>
+              <td>{{ao.lokalni_admin}}</td>
+              <td>
+                <a href="{% url 'KorisnikDetailView' ao.id_uredaj.id_korisnik.id_korisnik %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji korisnika br.{{ao.id_uredaj.id_korisnik.id_korisnik}}</a>
+              </td>
+              <td> {{ ao.id_uredaj.id_korisnik.ime|default:"N" }}
+                    {{ ao.id_uredaj.id_korisnik.prezime|default:"N" }}
+                    ({{ ao.id_uredaj.id_korisnik.email|default:"-"}})</td>
+              
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'galeb/paginacija.html' %}
+{% endblock sadrzaj%}

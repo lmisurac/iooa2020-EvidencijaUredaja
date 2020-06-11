@@ -21,7 +21,7 @@
         {% for z in zahtjevi %}
             <tr>
                 <td>
-                <a href="{% url 'ZahtjevDetailView' z.id_zahtjev %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji</a>
+                <a href="{% url 'ZahtjevDetailView' z.id_zahtjev %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji zahtjeva br.{{z.id_zahtjev}}</a>
                </td>
               <td>{{z.status}}</td>
               <td>{{z.datum}}</td>

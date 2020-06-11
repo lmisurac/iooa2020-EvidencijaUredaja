@@ -74,7 +74,7 @@
         <tbody>
             <tr>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'KorisnikDetailView' zahtjev.id_korisnik.id_korisnik %}" >Detalji korisnika</a>
+                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'KorisnikDetailView' zahtjev.id_korisnik.id_korisnik %}" >Detalji korisnika br.{{zahtjev.id_korisnik.id_korisnik}}</a>
                 </td>
                 <td>{{zahtjev.id_korisnik.ime}} {{zahtjev.id_korisnik.prezime}}</td>
                 <td>{{zahtjev.id_korisnik.email}}</td>
@@ -100,7 +100,7 @@
             {% for ar in zahtjev.adminradnje_set.get_queryset %}
             <tr>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'AdminRadnjeDetailView' ar.id_zahtjev.id_zahtjev ar.id_radnje %}" >Detalji administratorske radnje</a>
+                    <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'AdminRadnjeDetailView' ar.id_zahtjev.id_zahtjev ar.id_radnje %}" >Detalji administratorske radnje br.{{ar.id_radnje}}</a>
                 </td>
                 <td>{{ar.datum}} </td>
                 <td>{{ar.opis}}</td>

@@ -36,44 +36,40 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'ZahtjevListView'%}">Zahtjevi
           <!--<span class="sr-only">(current)</span>-->
            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'KorisnikListView' %}">Korisnici</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="{% url 'ZgradaListView'%}">Zgrade</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'UredajListView' %}">Uređaji</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'ProgramiListView' %}">Programi</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'KomponenteListView' %}">Komponente</a>
-          </li> 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'OrganizacijskaJedinicaListView' %}">Organizacijske jedinice</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'NabavaListView' %}">Nabave</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'DobavljacListView' %}">Dobavljači</a>
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Uređaji</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'UredajListView' %}">Uređaji</a>
+              <a class="dropdown-item" href="{% url 'ProgramiListView' %}">Programi</a>
+              <a class="dropdown-item" href="{% url 'KomponenteListView' %}">Komponente</a>
+              <a class="dropdown-item" href="{% url 'AdminOvlastiListView'%}">Administratorske ovlasti</a>
+            </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ostalo</a>
+            <a class="nav-link dropdown-toggle" href="{% url 'KorisnikListView' %}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Organizacija</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'OrganizacijskaJedinicaListView' %}">Organizacijske jedinice</a>
+              <a class="dropdown-item" href="{% url 'KorisnikListView' %}"> Korisnici</a>
+               <a class="dropdown-item" href="{% url 'NabavaListView' %}">Nabave</a>
+              <a class="dropdown-item" href="{% url 'DobavljacListView' %}">Dobavljači</a>
+            </div>
+          </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pregledi</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="{% url 'lokacije'%}">Lokacije</a>
               <a class="dropdown-item" href="{% url 'org_struktura'%}">Organizacijska struktura</a>
-              <a class="dropdown-item" href="{% url 'uredaji' %}">Uređaji</a>
             </div>
           </li>
-   
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <a class="nav-link" href="{% url 'ulazna'%}">

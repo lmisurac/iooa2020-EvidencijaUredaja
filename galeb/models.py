@@ -12,14 +12,14 @@ import datetime
 class AdminOvlasti(models.Model):
     id_uredaj = models.OneToOneField('Uredaj', models.DO_NOTHING, db_column='id_uredaj', primary_key=True)
     lokalni_admin = models.CharField(max_length=45)
-    datum_kreiranja = models.DateField(blank=True, null=True)
+    datum_kreiranja = models.DateField(blank=True, null=True,default=datetime.date.today)
     id_zahtjev = models.ForeignKey('Zahtjev', models.DO_NOTHING, db_column='id_zahtjev', blank=True, null=True)
 
     def __str__(self):
-        return str()
+        return str(self.id_uredaj or '')+' lokalni_admin: '+str(self.lokalni_admin or 'nepoznat')+' datum kreiranja: '+str(self.datum_kreiranja)+" zahtjev: "+str(self.id_zahtjev or ' nepoznat')
 
     def get_absolute_url(self):
-        pass
+        return reverse('UredajDetailView', kwargs = {'pk':self.id_uredaj.id_uredaj})
 
     class Meta:
         managed = False
@@ -271,13 +271,13 @@ class Uredaj(models.Model):
     def __str__(self):
         s = str(self.vrsta or '')+": "
         if(self.hostname_ip):
-            s +=str(self.hostname_ip )+"  "
+            s +=str(self.hostname_ip or 'tvornički naziv ' )+"  "
         if(self.proizvodac):
-            s += str(self.proizvodac)
+            s += str(self.proizvodac or ' nepoznat proizvođal')+" "
         if(self.model):
-            s +="("+str(self.model)+")"
+            s +="("+str(self.model or ' nepoznat model ')+")"
         if(self.id_korisnik):
-            s +=str(self.id_korisnik.ime or '')+" "+str(self.id_korisnik.prezime or '')+" ("+str(self.id_korisnik.email or '')+")"+" "+str(self.id_korisnik.radno_mjesto or '')
+            s +="  "+str(self.id_korisnik.ime or '')+" "+str(self.id_korisnik.prezime or '')+" ("+str(self.id_korisnik.email or '')+")"+" "+str(self.id_korisnik.radno_mjesto or '')
         return s
 
     def get_absolute_url(self):
@@ -294,7 +294,7 @@ class Zahtjev(models.Model):
     statusi_zahtjeva =[('Novi','Novi'),('Preuzet','Preuzet'),('Riješen','Riješen'),('Neriješiv','Neriješiv')] 
     nacini_podnosenja =[('Email','Email'),('Telefon','Telefon'),('Formaln sastanak','Formalni sastanak'),('Dogovor','Dogovor')]
     id_zahtjev = models.AutoField(primary_key=True)
-    id_korisnik = models.ForeignKey(Korisnik, models.DO_NOTHING, db_column='id_korisnik', blank=True, null=True)
+    id_korisnik = models.ForeignKey(Korisnik, models.DO_NOTHING, db_column='id_korisnik', blank=False, null=False)
     datum = models.DateField(blank=True, null=False, default=datetime.date.today )
     nacin_podnosenja = models.CharField(max_length=40,choices=nacini_podnosenja,default="Email")
     opis = models.TextField(max_length=500)
@@ -306,6 +306,7 @@ class Zahtjev(models.Model):
         +" ("+str(self.id_korisnik.email or '')+") - "+str(self.opis or '')
 
     def get_absolute_url(self):
+
         return reverse('ZahtjevDetailView', kwargs={'pk': self.pk})
 
     class Meta:

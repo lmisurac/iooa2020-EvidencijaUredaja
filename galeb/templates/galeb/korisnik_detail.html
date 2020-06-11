@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block sadrzaj %}
-<h2>Korisnik {{ korisnik.id_korisnik}}</h2>
+<h2>Korisnik {{ korisnik.ime }} {{ korisnik.prezime }}</h2>
+
 <ul class="nav">
   <li class="nav-item">
     <a class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'KorisnikListView' %}" >
@@ -44,6 +45,27 @@
         </tr>
     </tbody>
 </table>
+<table class="table table-striped table-sm">
+    <thead class="thead-dark">
+        <tr>
+          
+          <th>Akcija</th>
+          <th>Odjel</th>
+          <th>Akcija</th>
+          <th>Organizacijska jedinica</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            
+           <td><a href="{% url 'OdjelDetailView' korisnik.oznaka_odjela.oznaka_org_jed.oznaka_org_jed korisnik.oznaka_odjela.oznaka_odjela %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true"> Detalji odjela {{ korisnik.oznaka_odjela.oznaka_odjela }} </a> </td>
+           <td> {{ korisnik.oznaka_odjela.naziv }}</td>
+           <td> <a href="{% url 'OrganizacijskaJedinicaDetailView' korisnik.oznaka_odjela.oznaka_org_jed.oznaka_org_jed %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true"> Detalji org.jedinice {{ korisnik.oznaka_odjela.oznaka_org_jed.oznaka_org_jed }} </a> </td></td>
+           <td>{{korisnik.oznaka_odjela.oznaka_org_jed.naziv}} </td>
+        </tr>
+    </tbody>
+</table>
 <h5>{{korisnik.ime }}  {{korisnik.prezime }} - upućeni zahtjevi</h5>
 {% if korisnik.zahtjev_set.get_queryset %}
 <div class="table-responsive">
@@ -62,7 +84,7 @@
         {% for z in korisnik.zahtjev_set.get_queryset %}
             <tr>
                 <td>
-                <a href="{% url 'ZahtjevDetailView' z.id_zahtjev %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji</a>
+                <a href="{% url 'ZahtjevDetailView' z.id_zahtjev %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji zahtjeva br.{{z.id_zahtjev}}</a>
                </td>
               <td>{{z.status}}</td>
               <td>{{z.datum}}</td>
@@ -87,26 +109,29 @@
         <thead class="thead-dark">
             <tr>
               <th>Akcija</th>
-              <th>Lokacija</th>
               <th>Vrsta uređaja</th>
               <th>Hostname ili IP</th>
               <th>Proizvođač</th>
               <th>Model</th>
               <th>Napomena</th>
+              <th></th>
+              <th>Lokacija</th>
             </tr>
         </thead>
         <tbody>
         {% for u in korisnik.uredaj_set.get_queryset %}
             <tr>
                 <td>
-                <a href="{% url 'UredajDetailView' u.id_uredaj %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji uređaja</a>
+                <a href="{% url 'UredajDetailView' u.id_uredaj %}" class="btn btn-outline-primary btn-sm " role="button" aria-pressed="true">Detalji uređaja br.{{u.id_uredaj}}</a>
                </td>
-                <td>{{ u.oznaka_prostorije|default:"Neraspoređen" }}</td>
+                
                 <td>{{ u.vrsta }}</td>
                 <td>{{ u.hostname_ip|default_if_none:"Nepreimenovan" }}</td>
                 <td>{{ u.proizvodac|default_if_none:"-" }}</td>
                 <td>{{ u.model|default_if_none:"-" }}</td>
                 <td>{{ u.napomena|default_if_none:"-" }}</td>
+                <td></td>
+                <td>{{ u.oznaka_prostorije|default:"Neraspoređen" }}</td>
             </tr>
         {% endfor %}
         </tbody>

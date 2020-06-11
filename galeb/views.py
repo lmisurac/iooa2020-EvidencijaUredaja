@@ -13,7 +13,8 @@ Nabava,Odjel,OrganizacijskaJedinica,Programi,Prostorija,Uredaj,Zahtjev,Zgrada)
 from .forms import  (ZahtjevModelForm,ZgradaModelForm,ProstorijaModelForm,
 UredajModelForm,OrganizacijskaJedinicaModelForm,OdjelModelForm,KorisnikModelForm,
 ProgramiModelForm,KomponenteModelForm,AdminRadnjeModelForm,InstaliraniProgramiModelForm,
-NabavaModelForm,DobavljacModelForm,KonfiguracijaModelForm)
+NabavaModelForm,DobavljacModelForm,KonfiguracijaModelForm,
+AdminOvlastiModelForm)
 
 # Create your views here.
 def ulazna(request):
@@ -503,6 +504,54 @@ class AdminRadnjeDeleteView(DeleteView):
         print("AdminRadnjeDeleteView.get_success_url() id_zahtjev:"+str(id_zahtjev))
         return reverse_lazy('ZahtjevDetailView',kwargs={'pk':id_zahtjev})
 
+class AdminOvlastiCreateView(CreateView):
+    model = AdminOvlasti
+    form_class = AdminOvlastiModelForm
+    form_class.base_fields['id_uredaj'].disabled = True
+    def form_valid(self,form):
+        return super().form_valid(form)
+        
+    def get_initial(self, *args, **kwargs):
+        print(str(self.request.path))
+        id_uredaj = self.request.path.split('/')[2]
+        print("AdminOvlastiCreateView.get_initial() id_uredaj = "+ id_uredaj)
+        initial = super(AdminOvlastiCreateView, self).get_initial(**kwargs)
+        initial['id_uredaj'] =  id_uredaj
+        return initial
+
+    def get_context_data(self, **kwargs):
+        kontekst = super().get_context_data(**kwargs)
+        id_uredaj = str(self.request.path.split('/')[2])
+        print('AdminOvlastiCreateView.get_context_data() id_uredaj = '+str(id_uredaj))
+        kontekst['id_uredaj'] = id_uredaj
+        return kontekst
+
+class AdminOvlastiListView(ListView):
+    model = AdminOvlasti
+    context_object_name = 'adminovlasti'
+    paginate_by = 10
+
+class AdminOvlastiUpdateView(UpdateView):
+    model = AdminOvlasti
+    form_class = AdminOvlastiModelForm
+    form_class.base_fields['id_uredaj'].disabled = True
+    def form_valid(self,form):
+        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        kontekst = super().get_context_data(**kwargs)
+        id_uredaj = str(self.request.path.split('/')[2])
+        print('AdminOvlastiCreateView.get_context_data() id_uredaj = '+str(id_uredaj))
+        kontekst['id_uredaj'] = id_uredaj
+        return kontekst
+
+class AdminOvlastiDeleteView(DeleteView):
+    model = AdminOvlasti
+    context_object_name = 'adminovlast'
+    def get_success_url(self):
+        print(" AdminOvlastiDeleteView.get_success_url() request:"+str(self.request))
+        id_uredaj = self.request.path.split('/')[2]
+        print(" AdminOvlastiDeleteView.get_success_url() id_uredaj:"+str(id_uredaj))
+        return reverse_lazy('UredajDetailView',kwargs={'pk':id_uredaj})
 
 #zgrade prostorije uredaji
 def lokacije(request):

@@ -57,7 +57,7 @@
             {% for p in zgrada.prostorija_set.get_queryset %}
             <tr>
                 <td>
-                    <a  class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ProstorijaDetailView' zgrada.oznaka_zgrade p.oznaka_prostorije %}">Detalji prostorije</a></td>
+                    <a  class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true" href="{% url 'ProstorijaDetailView' zgrada.oznaka_zgrade p.oznaka_prostorije %}">Detalji prostorije {{ p.oznaka_prostorije }}</a></td>
                 <td>{{ p.oznaka_prostorije }}</td>
                 <td>{{ p.kat|default_if_none:"-"  }}</td>
                 <td>{{ p.namjena|default_if_none:"-"  }}</td>

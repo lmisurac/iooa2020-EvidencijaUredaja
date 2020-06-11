@@ -1,6 +1,6 @@
 from django import forms 
 from . models import (Zahtjev,Zgrada,Prostorija,Uredaj,OrganizacijskaJedinica,Odjel,Korisnik,
-Programi,Komponente,AdminRadnje,InstaliraniProgrami,Nabava,Dobavljac,Konfiguracija)
+Programi,Komponente,AdminRadnje,InstaliraniProgrami,Nabava,Dobavljac,Konfiguracija, AdminOvlasti)
 
 class ZahtjevModelForm(forms.ModelForm):
     class Meta:
@@ -63,7 +63,6 @@ class KonfiguracijaModelForm(forms.ModelForm):
         model = Konfiguracija
         fields = ['id_uredaj','id_komponente','id_radnje','stanje','napomena'] 
 
-
 class AdminRadnjeModelForm(forms.ModelForm):
     class Meta:
         model = AdminRadnje
@@ -79,7 +78,17 @@ class NabavaModelForm(forms.ModelForm):
         widgets = {
             'datum': forms.SelectDateWidget(),
         }
+
 class DobavljacModelForm(forms.ModelForm):
     class Meta:
         model = Dobavljac
         fields = '__all__'
+
+
+class AdminOvlastiModelForm(forms.ModelForm):
+    class Meta:
+        model = AdminOvlasti
+        fields = ['id_uredaj','datum_kreiranja','lokalni_admin','id_zahtjev',]
+        widgets = {
+            'datum_kreiranja': forms.SelectDateWidget(),
+        }

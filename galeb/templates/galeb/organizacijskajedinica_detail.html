@@ -41,9 +41,8 @@
     </table>
 <h5> {{ org_jedinica.naziv }} - odjeli</h5>
  <a class="btn btn-outline-success btn-sm" role="button" aria-pressed="true" href="{% url 'OdjelCreateView' org_jedinica.oznaka_org_jed %}" >Novi odjel</a>
-</ul>
+
 {% if org_jedinica.odjel_set.get_queryset %}
-    
     <table class="table table-striped table-sm">
         <thead class="thead-dark">
             <tr>
@@ -96,7 +95,7 @@
         </tbody>
     </table>
 {% else %}
-    <div class="alert alert-warning" role="alert">{{org_jedinica.naziv}} nema za sada upisan niti jedan odjel</div>
+    <div class="alert alert-warning" role="alert">{{org_jedinica.naziv}} za sada nema evidentiranih nabava</div>
 {% endif%}
 </div>
 {% endblock sadrzaj%}
