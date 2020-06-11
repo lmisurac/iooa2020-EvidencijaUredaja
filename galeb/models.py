@@ -292,7 +292,7 @@ class Uredaj(models.Model):
 class Zahtjev(models.Model):
     #status_zahtjeva [('Vrijednost','Prikaz)]
     statusi_zahtjeva =[('Novi','Novi'),('Preuzet','Preuzet'),('Riješen','Riješen'),('Neriješiv','Neriješiv')] 
-    nacini_podnosenja =[('Email','Email'),('Telefon','Telefon'),('Formaln sastanak','Formalni sastanak'),('Dogovor','Dogovor')]
+    nacini_podnosenja =[('email','Email'),('telefon','Telefon'),('formalni sastanak','Formalni sastanak'),('dogovor','Dogovor')]
     id_zahtjev = models.AutoField(primary_key=True)
     id_korisnik = models.ForeignKey(Korisnik, models.DO_NOTHING, db_column='id_korisnik', blank=False, null=False)
     datum = models.DateField(blank=True, null=False, default=datetime.date.today )
